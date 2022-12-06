@@ -16,6 +16,8 @@ public class Preferencias {
     int precio_decimales;
     boolean cargar_tasa;
     String tasa;
+    String ult_vez_act;
+    String tasa_actual;
 
     /**
      * Constructor privado de la clase Preferencias
@@ -27,8 +29,10 @@ public class Preferencias {
      * @param precio_decimales Decimales dle Precio (int)
      * @param cargar_tasa Cargar Tasa (boolean)
      * @param tasa Tasa (String)
+     * @param ult_vez_act Ultima vez act. precio (String)
+     * @param tasa_actual Tasa actual dólar (String)
      */
-    private Preferencias(String background, double precio_dolar, boolean redondear_resultado, boolean redondear_precio, int resultado_decimales, int precio_decimales, boolean cargar_tasa, String tasa) {
+    private Preferencias(String background, double precio_dolar, boolean redondear_resultado, boolean redondear_precio, int resultado_decimales, int precio_decimales, boolean cargar_tasa, String tasa, String ult_vez_act, String tasa_actual) {
         this.background = background;
         this.precio_dolar = precio_dolar;
         this.redondear_resultado = redondear_resultado;
@@ -37,6 +41,8 @@ public class Preferencias {
         this.precio_decimales = precio_decimales;
         this.cargar_tasa = cargar_tasa;
         this.tasa = tasa;
+        this.ult_vez_act = ult_vez_act;
+        this.tasa_actual = tasa_actual;
     }
     
     /**
@@ -52,7 +58,9 @@ public class Preferencias {
                 3,
                 3,
                 true,
-                "bcv"
+                "bcv",
+                "ninguno",
+                "ninguno"
         );
     }
     
@@ -70,7 +78,9 @@ public class Preferencias {
                 Integer.parseInt(lista.get(4)),
                 Integer.parseInt(lista.get(5)),
                 Boolean.parseBoolean(lista.get(6)),
-                lista.get(7)
+                lista.get(7),
+                lista.get(8),
+                lista.get(9)
         );
     }
     
@@ -87,6 +97,8 @@ public class Preferencias {
                 + resultado_decimales + "\n"
                 + precio_decimales + "\n"
                 + cargar_tasa + "\n"
-                + tasa;
+                + tasa + "\n"
+                + ult_vez_act + "\n"
+                + tasa_actual;
     }
 }

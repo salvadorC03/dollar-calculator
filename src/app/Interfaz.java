@@ -15,19 +15,25 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 
 /**
- * Dollar Calculator v1.0 Proyecto de Diplomado Java UNEWEB, alumno Salvador
+ * Dollar Calculator v1.1 Proyecto de Diplomado Java UNEWEB, alumno Salvador
  * Cammarata.
  *
  * @author Salvador
  */
 public class Interfaz extends javax.swing.JFrame {
 
-    //Variables bandera (flag)
+    //Variables)
     //Fondo (background)
     private static String background = "background_purple";
 
     //Valor del precio del dólar
     public static double precio_dolar = 1;
+
+    //Última vez actualizado (Precio)
+    public static String ult_vez_act = "ninguno";
+
+    //Tasa actual
+    public static String tasa_actual = "ninguno";
 
     //Preferencias
     static Preferencias preferencias;
@@ -135,6 +141,7 @@ public class Interfaz extends javax.swing.JFrame {
         //Mostrar opciones
         labelPrecioDolar.setVisible(true);
         labelIntroducirMonto.setVisible(true);
+        labelUltimaVezAct.setVisible(true);
         txtInformacion.setVisible(true);
         botonCalcular.setVisible(true);
 
@@ -148,6 +155,20 @@ public class Interfaz extends javax.swing.JFrame {
             default:
                 labelIntroducirMonto.setText(
                         "Introducir monto en dólares:");
+        }
+
+        //Revisa si la fecha de última vez act. no es igual a ninguno
+        if (!ult_vez_act.equals("ninguno")) {
+            labelUltimaVezAct.setText("Última vez actualizado: " + ult_vez_act);
+        } else {
+            labelUltimaVezAct.setText("");
+        }
+
+        //Revisa si la tasa actual no es igual a ninguno
+        if (!tasa_actual.equals("ninguno")) {
+            labelTasaActual.setText("Tasa actual: " + tasa_actual);
+        } else {
+            labelTasaActual.setText("");
         }
     }
 
@@ -294,10 +315,10 @@ public class Interfaz extends javax.swing.JFrame {
             while ((parametro = br.readLine()) != null) {
                 preferenciasList.add(parametro);
             }
-            
+
             //Establecer las preferencias del usuario. Si ocurre un error usar las preferencias por defecto.
             preferencias = Preferencias.cargarPreferencias(preferenciasList);
-        } catch (IOException e) {
+        } catch (Exception e) {
             //Si ocurre un error imprimir el mensaje en consola y cargar las opciones por defecto.
             System.err.println("Error al cargar opciones: " + e);
             preferencias = Preferencias.preferenciasPorDefecto();
@@ -311,12 +332,33 @@ public class Interfaz extends javax.swing.JFrame {
                 System.err.println("Error al cerrar lector de archivo: " + e);
             }
 
-            //Asignar el valor del precio del dólar guardado en preferencias
-            precio_dolar = preferencias.precio_dolar;
+            try {
+                //Asignar el valor del precio del dólar guardado en preferencias
+                precio_dolar = preferencias.precio_dolar;
 
-            //Asignar el fondo de pantalla guardado en preferencias          
-            background = preferencias.background;
-            cambiarFondo();
+                //Asignar el fondo de pantalla guardado en preferencias          
+                background = preferencias.background;
+                cambiarFondo();
+
+                //Asignar la tasa actual y la ult. vez act.
+                ult_vez_act = preferencias.ult_vez_act;
+                tasa_actual = preferencias.tasa_actual;
+            } catch (Exception e) {
+                //Si ocurre un error asignar preferencias por defecto
+                System.err.println("Error al asignar opciones: " + e);
+                preferencias = Preferencias.preferenciasPorDefecto();
+                
+                //Asignar el valor del precio del dólar guardado en preferencias
+                precio_dolar = preferencias.precio_dolar;
+
+                //Asignar el fondo de pantalla guardado en preferencias          
+                background = preferencias.background;
+                cambiarFondo();
+
+                //Asignar la tasa actual y la ult. vez act.
+                ult_vez_act = preferencias.ult_vez_act;
+                tasa_actual = preferencias.tasa_actual;
+            }
         }
     }
 
@@ -324,7 +366,7 @@ public class Interfaz extends javax.swing.JFrame {
      * Este método se encarga de guardar las preferencias del usuario. Se
      * ejecuta este método al finalizar la aplicación.
      */
-    private static void guardarDatos() {
+    public static void guardarDatos() {
         //Asignar tarea al cerrar el proceso
         Runtime.getRuntime().addShutdownHook(new Thread() {
 
@@ -342,6 +384,10 @@ public class Interfaz extends javax.swing.JFrame {
                     //Establecer el fondo y el precio del dólar en las preferencias
                     preferencias.background = background;
                     preferencias.precio_dolar = precio_dolar;
+
+                    //Establecer la ult. vez act. y la tasa actual en las preferencias
+                    preferencias.ult_vez_act = ult_vez_act;
+                    preferencias.tasa_actual = tasa_actual;
 
                     //Guardar preferencias
                     pw.println(preferencias.toString());
@@ -412,6 +458,7 @@ public class Interfaz extends javax.swing.JFrame {
         labelCreadoPor = new javax.swing.JLabel();
         labelCorreo = new javax.swing.JLabel();
         labelContacto = new javax.swing.JLabel();
+        labelVersion = new javax.swing.JLabel();
         wallPaperAcercaDe = new javax.swing.JLabel();
         ventanaCambiarPrecio = new javax.swing.JDialog();
         labelCambiarPrecioIntroducirPrecio = new javax.swing.JLabel();
@@ -445,6 +492,8 @@ public class Interfaz extends javax.swing.JFrame {
         txtInformacion = new javax.swing.JTextField();
         botonCalcular = new javax.swing.JButton();
         labelPrecioDolar = new javax.swing.JLabel();
+        labelUltimaVezAct = new javax.swing.JLabel();
+        labelTasaActual = new javax.swing.JLabel();
         labelIntroducirMonto = new javax.swing.JLabel();
         txtResultado = new javax.swing.JTextField();
         txtCalcular = new javax.swing.JTextField();
@@ -493,6 +542,11 @@ public class Interfaz extends javax.swing.JFrame {
         labelContacto.setForeground(new java.awt.Color(255, 255, 255));
         labelContacto.setText("salvadorcammarata03@gmail.com");
         ventanaAcercaDe.getContentPane().add(labelContacto, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 170, -1, -1));
+
+        labelVersion.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        labelVersion.setForeground(new java.awt.Color(255, 255, 255));
+        labelVersion.setText("Versión 1.1");
+        ventanaAcercaDe.getContentPane().add(labelVersion, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 250, -1, -1));
 
         wallPaperAcercaDe.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/background_blue.jpg"))); // NOI18N
         ventanaAcercaDe.getContentPane().add(wallPaperAcercaDe, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 300));
@@ -690,6 +744,16 @@ public class Interfaz extends javax.swing.JFrame {
         labelPrecioDolar.setText("Precio del dólar:");
         labelPrecioDolar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         getContentPane().add(labelPrecioDolar, new org.netbeans.lib.awtextra.AbsoluteConstraints(145, 90, -1, -1));
+
+        labelUltimaVezAct.setFont(new java.awt.Font("Tahoma", 3, 12)); // NOI18N
+        labelUltimaVezAct.setForeground(new java.awt.Color(255, 255, 255));
+        labelUltimaVezAct.setText("Última vez actualizado:");
+        getContentPane().add(labelUltimaVezAct, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, 240, 10));
+
+        labelTasaActual.setFont(new java.awt.Font("Tahoma", 3, 12)); // NOI18N
+        labelTasaActual.setForeground(new java.awt.Color(255, 255, 255));
+        labelTasaActual.setText("Tasa actual:");
+        getContentPane().add(labelTasaActual, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 170, 10));
 
         labelIntroducirMonto.setFont(new java.awt.Font("Tahoma", 3, 12)); // NOI18N
         labelIntroducirMonto.setForeground(new java.awt.Color(255, 255, 255));
@@ -911,6 +975,13 @@ public class Interfaz extends javax.swing.JFrame {
 
                 //Asigna el valor del precio del dólar, dependiendo de si se deben limitar los decimales y de si hay o no hay decimales
                 precio_dolar = preferencias.redondear_precio ? preferencias.precio_decimales > 0 ? redondear(nuevo_precio, preferencias.precio_decimales) : Math.round(nuevo_precio) : nuevo_precio;
+
+                //Asigna la última vez act. y la tasa actual a ninguno
+                ult_vez_act = "ninguno";
+                tasa_actual = "ninguno";
+
+                //Actualizar opciones y precio en pantalla
+                actualizarOpciones();
                 actualizarPrecio();
             } else {
                 //Si el valor introducido es menor o igual a cero mostrar el siguiente error:
@@ -966,7 +1037,7 @@ public class Interfaz extends javax.swing.JFrame {
     private void opcionElegirFondoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionElegirFondoActionPerformed
         // TODO add your handling code here:
         JFileChooser fc = new JFileChooser();
-        
+
         if (fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
             try {
                 javax.swing.ImageIcon backgroundImage = new javax.swing.ImageIcon(fc.getSelectedFile().getAbsolutePath());
@@ -1096,6 +1167,9 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JLabel labelPreferenciasResultado;
     private javax.swing.JLabel labelPreferenciasTituloPreferencias;
     private javax.swing.JLabel labelPreferenciasTituloPreferencias1;
+    private javax.swing.JLabel labelTasaActual;
+    private javax.swing.JLabel labelUltimaVezAct;
+    private javax.swing.JLabel labelVersion;
     private javax.swing.JMenuBar menu;
     private javax.swing.JMenu menuAyuda;
     private javax.swing.JMenu menuCambiarFondo;

@@ -66,13 +66,21 @@ public class TasaDolarBCV extends Thread {
                 interfaz.precio_dolar = tasa_dolar;
             } 
             
+            String fecha = new java.text.SimpleDateFormat("dd/MM/yyyy").format(new java.util.Date());
+            interfaz.ult_vez_act = fecha;
+            
+            interfaz.tasa_actual = "BCV";
+            
             //Actualiza el precio en la interfaz
             interfaz.actualizarPrecio();
+            
+            //Actualiza las opciones en la interfaz
+            interfaz.actualizarOpciones();
             
             //Ocultar ventana cargando
             interfaz.ventanaCargando.setVisible(false);
             //Mostrar mensaje success
-            javax.swing.JOptionPane.showMessageDialog(null, "Obtenida la tasa del dólar BCV para el día actual: " + new java.text.SimpleDateFormat("dd/MM/yyyy").format(new java.util.Date()), "Mensaje", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            javax.swing.JOptionPane.showMessageDialog(null, "Obtenida la tasa del dólar BCV para el día actual: " + fecha, "Mensaje", javax.swing.JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception e) {
             //Si ocurre un error imprimirlo en consola y mostrar el siguiente mensaje
             System.out.println(e.getMessage() + "\n" + java.util.Arrays.toString(e.getStackTrace()));
