@@ -142,6 +142,7 @@ public class Interfaz extends javax.swing.JFrame {
         labelPrecioDolar.setVisible(true);
         labelIntroducirMonto.setVisible(true);
         labelUltimaVezAct.setVisible(true);
+        labelTasaActual.setVisible(true);
         txtInformacion.setVisible(true);
         botonCalcular.setVisible(true);
 
@@ -237,6 +238,8 @@ public class Interfaz extends javax.swing.JFrame {
             //Ocultar opciones de pantalla
             labelPrecioDolar.setVisible(false);
             labelIntroducirMonto.setVisible(false);
+            labelUltimaVezAct.setVisible(false);
+            labelTasaActual.setVisible(false);
             txtInformacion.setVisible(false);
             botonCalcular.setVisible(false);
 
@@ -347,7 +350,7 @@ public class Interfaz extends javax.swing.JFrame {
                 //Si ocurre un error asignar preferencias por defecto
                 System.err.println("Error al asignar opciones: " + e);
                 preferencias = Preferencias.preferenciasPorDefecto();
-                
+
                 //Asignar el valor del precio del dólar guardado en preferencias
                 precio_dolar = preferencias.precio_dolar;
 
