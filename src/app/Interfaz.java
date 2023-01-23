@@ -549,7 +549,7 @@ public class Interfaz extends javax.swing.JFrame {
         labelVersion.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         labelVersion.setForeground(new java.awt.Color(255, 255, 255));
         labelVersion.setText("Versión 1.1");
-        ventanaAcercaDe.getContentPane().add(labelVersion, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 250, -1, -1));
+        ventanaAcercaDe.getContentPane().add(labelVersion, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 230, -1, -1));
 
         wallPaperAcercaDe.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/background_blue.jpg"))); // NOI18N
         ventanaAcercaDe.getContentPane().add(wallPaperAcercaDe, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 300));
@@ -1105,28 +1105,11 @@ public class Interfaz extends javax.swing.JFrame {
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-
-                }
-            }
-        } catch (ClassNotFoundException ex) {
+            javax.swing.UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+        } catch (Exception ex) {
             java.util.logging.Logger.getLogger(Interfaz.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Interfaz.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Interfaz.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Interfaz.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
